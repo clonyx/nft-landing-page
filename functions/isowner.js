@@ -8,7 +8,7 @@ const include = "metadata";
 exports.handler = async (event, context) => {
   const wallet = event.queryStringParameters && event.queryStringParameters.wallet
   const page = event.queryStringParameters && event.queryStringParameters.page
-
+  //debugger;
   const isOwner = (wallet) => {
     if(!wallet) {
       return {
@@ -38,7 +38,7 @@ const getOwnedNfts = async (wallet, page) => {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: AUTH
+      Authorization: '04547f11-263a-4a9b-8c8f-c8c063620819'
     }
   };
   const query = new URLSearchParams({
