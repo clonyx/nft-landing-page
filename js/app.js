@@ -8,6 +8,8 @@ window.addEventListener('DOMContentLoaded', () => {
   const onboarding = new MetaMaskOnboarding();
   const onboardButton = document.getElementById('connectWallet');
   let accounts;
+  accounts = window.localStorage.getItem('accounts') || undefined;
+  
 
   const updateButton = async () => {
     if (!MetaMaskOnboarding.isMetaMaskInstalled()) {
@@ -18,20 +20,22 @@ window.addEventListener('DOMContentLoaded', () => {
         onboarding.startOnboarding();
       };
     } else if (accounts && accounts.length > 0) {
-      onboardButton.innerText = `✔ ...${accounts[0].slice(-4)}`;
+      onboardButton.innerText = `✔ ...${accounts.slice(-4)}`;
       onboardButton.disabled = true;
       onboarding.stopOnboarding();
-      checkOwner(accounts[0]);
+      checkOwner(accounts);
     } else {
       onboardButton.innerText = 'Connect MetaMask!';
       onboardButton.onclick = async () => {
         await window.ethereum.request({
           method: 'eth_requestAccounts',
         })
-        .then(function(accounts) {
-          onboardButton.innerText = `✔ ...${accounts[0].slice(-4)}`;
+        .then(function(accountsList) {
+          window.localStorage.setItem('accounts', accountsList[0]);
+          accounts = window.getLocalStorage('accounts');
+          onboardButton.innerText = `✔ ...${window.localStorage.getItem('accounts').slice(-4)}`;
           onboardButton.disabled = true;
-          checkOwner(accounts[0]);
+          checkOwner(accounts);
         });
       };
     }
